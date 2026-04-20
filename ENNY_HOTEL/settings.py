@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-19_t%1+$*#v*5ri$vwg&xecn!&fm^t$w*43fr#=tm*(liwb22s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'ennyhotel.onrender.com', 
+    '127.0.0.1', 
+    'localhost',
+]
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
