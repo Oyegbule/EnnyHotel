@@ -124,6 +124,18 @@ STATIC_URL = 'static/'
 
 # AUTH_USER_MODEL = 'accounts.User'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Extra places for collectstatic to find static files.
+# This is where you put your custom CSS and images during development.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# This enables WhiteNoise's storage backend which compresses and hashes 
+# static files for better performance on Render.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Add this at the bottom of settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
