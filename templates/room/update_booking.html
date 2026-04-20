@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'all-rooms' %}" class="text-decoration-none">Inventory</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Update Booking</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    
+                    <div class="col-md-4 bg-dark text-white p-4 p-lg-5 d-flex flex-column justify-content-center border-end border-secondary">
+                        <div class="text-center text-md-start">
+                            <div class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill fw-bold">
+                                <i class="fa fa-edit me-1"></i> Editing Record
+                            </div>
+                            <h2 class="display-6 fw-bold mb-2">{{ booking.room.name }}</h2>
+                            <p class="text-secondary small mb-4">Modify stay details for <strong>{{ booking.guest_names }}</strong></p>
+                            
+                            <ul class="list-unstyled small text-start opacity-75">
+                                <li class="mb-2"><i class="fa fa-tag me-2 text-primary"></i> Category: {{ booking.room.category }}</li>
+                                <li class="mb-2"><i class="fa fa-calendar-o me-2 text-primary"></i> Created: {{ booking.start_date|date:"M d, Y" }}</li>
+                                <li><i class="fa fa-info-circle me-2 text-primary"></i> ID: #BK-{{ booking.pk }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 bg-white">
+                        <div class="card-body p-4 p-lg-5">
+                            <form method="POST">
+                                {% csrf_token %}
+
+                                <h5 class="fw-bold mb-4 text-dark border-bottom pb-2">Guest Information</h5>
+                                
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
+                                            {% render_field form.guest_names class="form-control" placeholder="Name" %}
+                                            <label class="text-muted"><i class="fa fa-user me-2"></i>Guest Fullname</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            {% render_field form.guest_email class="form-control" placeholder="Email" %}
+                                            <label class="text-muted"><i class="fa fa-envelope me-2"></i>Email ID</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            {% render_field form.guest_phone class="form-control" placeholder="Phone" %}
+                                            <label class="text-muted"><i class="fa fa-phone me-2"></i>Phone Number</label>
+                                        </div>
+                                    </div>
+
+                                    <h5 class="fw-bold mt-4 mb-4 text-dark border-bottom pb-2">Modify Schedule</h5>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            {% render_field form.start_date type="date" class="form-control" %}
+                                            <label class="text-muted">Start Date</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            {% render_field form.end_date type="date" class="form-control" %}
+                                            <label class="text-muted">End Date</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <a href="{% url 'all-rooms' %}" class="btn btn-light px-4 py-2 border">Cancel</a>
+                                    <button class="btn btn-primary px-5 py-2 fw-bold shadow-sm" type="submit">
+                                        Save Changes <i class="fa fa-save ms-2"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern SaaS Form Styling */
+    .breadcrumb-item a { color: #6c757d; font-weight: 500; }
+    .breadcrumb-item.active { color: #0d6efd; font-weight: 600; }
+
+    .form-floating > .form-control:focus ~ label {
+        color: #0d6efd;
+    }
+
+    .form-control {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.08);
+    }
+
+    /* Side Panel Gradient */
+    .bg-dark {
+        background: linear-gradient(180deg, #212529 0%, #343a40 100%) !important;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .card-body { padding: 1.5rem !important; }
+        .bg-dark { border-end: none !important; border-bottom: 5px solid #ffc107; }
+    }
+</style>
+{% endblock content %}

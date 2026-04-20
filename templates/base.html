@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <title>ENNY HOTEL</title>
+    <style>
+        /* This ensures the footer stays at the bottom on short pages */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .main-wrapper {
+            flex: 1;
+        }
+        footer a i {
+            transition: transform 0.3s ease;
+        }
+        footer a i:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        {% block navbar %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a href="/" class="navbar-brand">Enny Hotel</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Room Service
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark shadow border-0">
+    <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'add-category' %}">
+            <i class="fas fa-plus-circle me-2 small"></i> Add Category
+        </a>
+    </li>
+    <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'add-room' %}">
+            <i class="fas fa-door-open me-2 small"></i> Add Room
+        </a>
+    </li>
+    <li>
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'all-rooms' %}">
+            <i class="fas fa-list me-2 small"></i> View Rooms
+        </a>
+    </li>
+    <li><hr class="dropdown-divider border-light opacity-10"></li>
+    <li>
+        <a class="dropdown-item d-flex align-items-center text-info" href="{% url 'all-active-guests' %}">
+            <i class="fas fa-users me-2 small"></i> All Active Guests
+        </a>
+    </li>
+</ul>
+                        </li>
+                    </ul>
+                    <a href="{% url 'logout' %}" class="btn btn-warning btn-sm">Logout</a>
+                </div>
+            </div>
+        </nav>
+        {% endblock navbar %}
+
+        <div class="container mt-5">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}" role="alert">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+
+    <footer style="background-color: #000000;" class="text-white pt-3 pb-2 mt-5">
+    <div class="container text-center">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <p class="text-uppercase small fw-bold mb-2" style="letter-spacing: 1px;">Connect With Us</p>
+                
+                <a href="https://wa.me/2348059979270" target="_blank" class="text-white me-3 text-decoration-none">
+                    <i class="fab fa-whatsapp fa-lg text-success"></i>
+                </a>
+
+                <a href="https://www.instagram.com/eniolaoyegbule?igsh=MWd3M2lrYnU2c2txZA==" target="_blank" class="text-white text-decoration-none">
+                    <i class="fab fa-instagram fa-lg text-danger"></i>
+                </a>
+            </div>
+        </div>
+        
+        <hr class="my-2 border-white" style="opacity: 0.15;">
+        
+        <div class="row">
+            <div class="col-md-12">
+                <p style="font-size: 0.7rem; opacity: 0.8;" class="mb-0">
+                    &copy; 2026 Enny Hotel. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

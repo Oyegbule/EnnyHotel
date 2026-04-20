@@ -1,0 +1,103 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<div class="login-wrapper animate__animated animate__fadeIn">
+    <div class="text-center mb-4">
+        <div class="brand-logo-circle mb-3 mx-auto">
+            <i class="fa fa-shield-halved fa-2x text-primary"></i>
+        </div>
+        <h4 class="fw-bold text-white mb-0">Management Portal</h4>
+        <p class="text-white-50 small">Enter your credentials to access the dashboard</p>
+    </div>
+
+    <form class="p-4 p-md-5 glass-form rounded-4 shadow-lg" method="POST">
+        {% csrf_token %}
+        
+        <div class="form-floating mb-3">
+            <input type="text" name="username" class="form-control bg-transparent text-white border-white-50" id="floatingInput" placeholder="Username" required>
+            <label for="floatingInput" class="text-white-50"><i class="fa fa-user me-2"></i>Username</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="password" name="password" class="form-control bg-transparent text-white border-white-50" id="floatingPassword" placeholder="Password" required>
+            <label for="floatingPassword" class="text-white-50"><i class="fa fa-lock me-2"></i>Password</label>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 px-1">
+            <div class="form-check">
+                <input class="form-check-input bg-transparent border-white-50" type="checkbox" value="" id="rememberMe">
+                <label class="form-check-label small text-white-50" for="rememberMe">Remember me</label>
+            </div>
+            <a href="{% url 'password_reset' %}" class="small text-primary text-decoration-none fw-bold">Forgot?</a>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary rounded-pill py-3 fw-bold text-uppercase tracking-wider shadow" type="submit">
+            Secure Sign In <i class="fa fa-sign-in ms-2"></i>
+        </button>
+
+        <div class="mt-4 text-center">
+            <p class="small text-white-50">Don't have an account? 
+                <a href="{% url 'register' %}" class="text-white fw-bold text-decoration-none border-bottom border-primary">Sign Up</a>
+            </p>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Styling for the Creative Login */
+    .login-wrapper {
+        max-width: 450px;
+        margin: 0 auto;
+    }
+
+    .brand-logo-circle {
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+    }
+
+    /* Glass Form Overrides */
+    .glass-form {
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* Floating Input Dark Theme Adjustments */
+    .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        border-color: #c5a059 !important; /* Gold from your base theme */
+        box-shadow: 0 0 0 0.25rem rgba(197, 160, 89, 0.25);
+    }
+
+    .form-control::placeholder {
+        color: transparent;
+    }
+
+    /* Fixing label color on focus */
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        color: #c5a059 !important;
+        opacity: 1;
+    }
+
+    .tracking-wider {
+        letter-spacing: 1.5px;
+    }
+
+    /* Mobile responsiveness padding */
+    @media (max-width: 576px) {
+        .glass-form {
+            padding: 2rem !important;
+        }
+    }
+</style>
+{% endblock content %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid py-3 py-md-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-4 p-md-5 text-white rounded-3 shadow-lg bg-dark" 
+                 style="background: linear-gradient(45deg, #1a1a1a 0%, #343a40 100%);">
+                
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary rounded-circle p-3 me-3 d-none d-sm-block">
+                                <i class="fa fa-hotel fa-2x text-white"></i>
+                            </div>
+                            <div>
+                                <h1 class="display-6 fw-bold mb-0">Welcome, {{ request.user.username }}</h1>
+                                <small class="text-info text-uppercase tracking-wider">Property Manager Portal</small>
+                            </div>
+                        </div>
+                        
+                        <p class="lead fs-6 text-light-50 opacity-75 mt-3" style="text-align: justify;">
+                            Welcome to the <strong>Enny Hotel Management Hub</strong>... 
+                            Currently, there are <strong>{{ o_room }} occupied rooms</strong>. 
+                            The swimming pool and gym facilities remain fully operational from 6:00 AM to 9:00 PM daily. 
+                        </p>
+                        
+                        <div class="mt-4 d-grid d-sm-flex gap-2">
+                            <a href="{% url 'all-rooms' %}" class="btn btn-primary btn-lg px-4">
+                                <i class="fa fa-list-ul me-2"></i>Manage Inventory
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 text-center d-none d-lg-block">
+                        <div class="p-4 border border-secondary rounded-3 bg-opacity-10 bg-white shadow-sm">
+                            <h2 id="live-day" class="display-4 fw-bold mb-0">{% now "d" %}</h2>
+                            <p id="live-month-year" class="mb-0 text-uppercase">{% now "F Y" %}</p>
+                            
+                            <div id="live-time" class="h4 fw-light text-white-50 my-2">00:00:00</div>
+                            
+                            <hr class="my-2 text-secondary">
+                            <p class="small mb-0 text-info">
+                                <i class="fa fa-clock me-1"></i> Shift: <span id="live-shift">Detecting...</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body border-start border-danger border-5 rounded-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted small fw-bold text-uppercase mb-1">Occupied</p>
+                            <h2 class="fw-bold mb-0 text-danger">{{ o_room }}</h2>
+                        </div>
+                        <div class="icon-shape bg-danger bg-opacity-10 p-3 rounded">
+                            <i class="fa fa-bed text-danger"></i>
+                        </div>
+                    </div>
+                    <p class="mt-3 mb-0 small text-muted">Keep the good work going!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body border-start border-success border-5 rounded-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted small fw-bold text-uppercase mb-1">Available</p>
+                            <h2 class="fw-bold mb-0 text-success">{{ a_room }}</h2>
+                        </div>
+                        <div class="icon-shape bg-success bg-opacity-10 p-3 rounded">
+                            <i class="fa fa-door-open text-success"></i>
+                        </div>
+                    </div>
+                    <p class="mt-3 mb-0 small text-muted">We can take in more guests.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Guest Wi-Fi</p>
+                    <div class="d-flex align-items-center mt-2">
+                        <i class="fa fa-wifi text-primary me-2"></i>
+                        <span class="fw-bold">EnnyGuest_2026</span>
+                    </div>
+                    <hr class="my-2">
+                    <small class="text-muted">Ext: 500 (IT Support)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100 text-white bg-primary">
+                <div class="card-body d-flex flex-column justify-content-center text-center">
+                    <h6 class="text-uppercase small opacity-75">Pool & Gym Hours</h6>
+                    <p class="h5 fw-bold mb-0">6:00 AM - 9:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateDashboard() {
+    const now = new Date();
+    
+    // 1. Update Date
+    const day = now.getDate().toString().padStart(2, '0');
+    const monthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase();
+    
+    const dayElement = document.getElementById('live-day');
+    const monthElement = document.getElementById('live-month-year');
+    
+    if(dayElement) dayElement.innerText = day;
+    if(monthElement) monthElement.innerText = monthYear;
+
+    // 2. Update Live Time
+    const timeString = now.toLocaleTimeString('en-GB'); // 24hr format
+    const timeElement = document.getElementById('live-time');
+    if(timeElement) timeElement.innerText = timeString;
+
+    // 3. Update Shift Logic
+    const hours = now.getHours();
+    let shift = "";
+
+    // Morning: 6am-2pm | Afternoon: 2pm-10pm | Night: 10pm-6am
+    if (hours >= 6 && hours < 14) {
+        shift = "Morning";
+    } else if (hours >= 14 && hours < 22) {
+        shift = "Afternoon";
+    } else {
+        shift = "Night";
+    }
+
+    const shiftElement = document.getElementById('live-shift');
+    if(shiftElement) shiftElement.innerText = shift;
+}
+
+// Run every second
+setInterval(updateDashboard, 1000);
+updateDashboard(); // Initial call
+</script>
+
+<style>
+    .card { transition: transform 0.2s ease; }
+    .card:hover { transform: translateY(-5px); }
+    .icon-shape { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+</style>
+{% endblock content %}

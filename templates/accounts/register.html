@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block navbar %}
+<style>nav, .navbar { display: none !important; }</style>
+{% endblock navbar %}
+
+{% block content %}
+<div class="registration-container d-flex align-items-center justify-content-center">
+    <div class="login-wrapper animate__animated animate__zoomIn">
+        
+        <div class="d-flex justify-content-end mb-3">
+            <div class="glass-nav-pill px-3 py-1">
+                <span class="small text-white-50">Have an account?</span>
+                <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none ms-2 small">SIGN IN <i class="fa fa-chevron-right ms-1" style="font-size: 0.7rem;"></i></a>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <div class="brand-logo-circle mb-3 mx-auto shadow-lg">
+                <i class="fa fa-hotel fa-2x text-primary"></i>
+            </div>
+            <h3 class="fw-bold text-white mb-0">Join the Team</h3>
+            <p class="text-white-50">Create your Enny Hotel staff credentials</p>
+        </div>
+
+        <div class="card glass-form rounded-5 shadow-2xl border-0">
+            <div class="card-body p-4 p-md-5">
+                <form method="POST" class="needs-validation">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        {% for field in form %}
+                        <div class="col-12 mb-3">
+                            <div class="form-floating custom-form-group">
+                                {% render_field field class="form-control" placeholder=field.label %}
+                                <label><i class="fa fa-edit me-2 opacity-50"></i>{{ field.label }}</label>
+                                
+                                {% if field.errors %}
+                                    <div class="error-feedback">
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% if field.help_text %}
+                                <div class="form-text x-small text-white-50 px-2 mt-1">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button class="btn btn-primary btn-lg w-100 rounded-pill py-3 fw-bold text-uppercase mt-4 shadow-lg hover-up" type="submit">
+                        Register Account <i class="fa fa-check-circle ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <p class="text-center mt-4 text-white-50 x-small tracking-widest text-uppercase">Enny Hotel &copy; 2026 | Staff Management</p>
+    </div>
+</div>
+
+<style>
+    /* Full Page Hotel Background Override */
+    body {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        min-height: 100vh;
+    }
+
+    .registration-container {
+        min-height: 85vh;
+        padding: 2rem 1rem;
+    }
+
+    .login-wrapper { 
+        max-width: 520px; 
+        width: 100%;
+        perspective: 1000px;
+    }
+
+    /* Glass Navigation */
+    .glass-nav-pill {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+    }
+
+    .brand-logo-circle {
+        width: 80px; height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        backdrop-filter: blur(8px);
+    }
+
+    /* Modern Glass Card */
+    .glass-form {
+        background: rgba(25, 25, 25, 0.4) !important;
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* Floating Inputs Fixes */
+    .custom-form-group .form-control {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff !important;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .custom-form-group .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.12) !important;
+        border-color: #c5a059 !important;
+        box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+    }
+
+    .custom-form-group label {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .custom-form-group .form-control:focus ~ label {
+        color: #c5a059 !important;
+    }
+
+    /* Typography & Utilities */
+    .x-small { font-size: 0.75rem; }
+    .tracking-widest { letter-spacing: 0.15em; }
+    
+    .error-feedback {
+        color: #ff6b6b;
+        font-size: 0.75rem;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    .hover-up:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 2rem 1.5rem !important;
+        }
+        .registration-container {
+            padding-top: 1rem;
+        }
+    }
+</style>
+{% endblock content %}

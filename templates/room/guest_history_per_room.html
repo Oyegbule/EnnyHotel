@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4 align-items-end">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-dark mb-1"><i class="fa fa-history text-secondary me-2"></i>Guest Occupancy History</h2>
+            <p class="text-muted">A complete record of all past and current guest stays.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="btn-group shadow-sm">
+                <button class="btn btn-white border small fw-bold"><i class="fa fa-download me-1"></i> Export PDF</button>
+                <button class="btn btn-white border small fw-bold"><i class="fa fa-filter me-1"></i> Filter</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr class="text-muted small fw-bold text-uppercase">
+                            <th class="ps-4 py-3">Guest Profile</th>
+                            <th class="py-3">Room Allocation</th>
+                            <th class="py-3">Check-In / Check-Out</th>
+                            <th class="py-3">Status</th>
+                            <th class="pe-4 py-3 text-end">Record ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for guest in guests %}
+                        <tr>
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="fa fa-user-circle-o text-secondary fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">{{ guest.guest_names }}</div>
+                                        <div class="x-small text-muted">{{ guest.guest_email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="py-3">
+                                <span class="fw-bold text-primary"><i class="fa fa-hashtag small me-1"></i>{{ guest.room.name }}</span>
+                                <div class="x-small text-muted text-uppercase">{{ guest.room.category }}</div>
+                            </td>
+
+                            <td class="py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="date-pill">
+                                        <span class="text-muted">In:</span> <strong>{{ guest.start_date|date:"d M, Y" }}</strong>
+                                    </div>
+                                    <div class="mx-2 text-muted opacity-50">|</div>
+                                    <div class="date-pill">
+                                        <span class="text-muted">Out:</span> <strong>{{ guest.end_date|date:"d M, Y" }}</strong>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="py-3">
+                                {% if guest.checked_out %}
+                                <span class="badge rounded-pill badge-history-inactive">
+                                    <i class="fa fa-archive me-1"></i> Archived
+                                </span>
+                                {% else %}
+                                <span class="badge rounded-pill badge-history-active">
+                                    <i class="fa fa-bolt me-1"></i> Live Stay
+                                </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="pe-4 py-3 text-end">
+                                <span class="text-mono text-muted small">#HS-{{ guest.pk|add:"1000" }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="fa fa-folder-open-o fa-3x mb-3 opacity-25"></i>
+                                    <p>No historical records found.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom Styling for the History Page */
+    .x-small { font-size: 0.75rem; }
+    .text-mono { font-family: 'Courier New', Courier, monospace; }
+    
+    /* Soft History Badges */
+    .badge-history-inactive { 
+        background-color: #f1f3f5; 
+        color: #6c757d; 
+        border: 1px solid #dee2e6;
+        padding: 0.5em 1em;
+    }
+    
+    .badge-history-active { 
+        background-color: #e7f5ff; 
+        color: #007bff; 
+        border: 1px solid #cfe2ff;
+        padding: 0.5em 1em;
+    }
+
+    .date-pill {
+        font-size: 0.85rem;
+        color: #495057;
+    }
+
+    /* Table Row Styling */
+    .table-hover tbody tr:hover {
+        background-color: #fdfdfd;
+        cursor: default;
+    }
+
+    .card {
+        border: 1px solid #edf2f9;
+    }
+
+    .btn-white {
+        background: white;
+        color: #444;
+        transition: all 0.2s;
+    }
+
+    .btn-white:hover {
+        background: #f8f9fa;
+    }
+
+    /* Responsive Mobile Fixes */
+    @media (max-width: 992px) {
+        .date-pill { font-size: 0.75rem; }
+        .badge { font-size: 0.7rem; }
+    }
+</style>
+{% endblock content %}

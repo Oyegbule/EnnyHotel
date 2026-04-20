@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="fw-bold text-dark"><i class="fa fa-bed me-2 text-primary"></i>Room Inventory</h3>
+            <p class="text-muted small">Add new units and monitor live availability status across all categories.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white py-3 border-bottom border-light">
+                    <h5 class="card-title mb-0 fw-bold text-dark">Register New Room</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-floating mb-3">
+                            {% render_field form.category class="form-select border-0 bg-light rounded-3" id="floatCat" %}
+                            <label for="floatCat" class="text-muted small">Room Category</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            {% render_field form.name class="form-control border-0 bg-light rounded-3" id="floatName" placeholder="E.g. Room 101" %}
+                            <label for="floatName" class="text-muted small">Room Name / Number</label>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm fw-bold" type="submit">
+                            <i class="fa fa-plus-circle me-2"></i>Add to Inventory
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 bg-primary text-white rounded-4 shadow-sm mt-4">
+                <div class="card-body p-4 text-center">
+                    <h1 class="display-5 fw-bold mb-0">{{ rooms.count }}</h1>
+                    <p class="small text-uppercase tracking-wider opacity-75 mb-0">Total Units Managed</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Live Room List</h5>
+                    <div class="input-group input-group-sm w-auto">
+                        <span class="input-group-text bg-light border-0"><i class="fa fa-search small text-muted"></i></span>
+                        <input type="text" class="form-control bg-light border-0" placeholder="Filter rooms...">
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr class="text-muted x-small fw-bold text-uppercase">
+                                    <th class="ps-4 py-3">Room Information</th>
+                                    <th class="py-3">Tier</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="pe-4 py-3 text-end">Management</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for room in rooms %}
+                                <tr>
+                                    <td class="ps-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon-box bg-soft-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fa fa-door-closed text-primary"></i>
+                                            </div>
+                                            <span class="fw-bold h6 mb-0">{{ room.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-3">
+                                        <span class="text-muted small">{{ room.category }}</span>
+                                    </td>
+                                    <td class="py-3">
+                                        {% if room.is_available %}
+                                        <span class="badge rounded-pill bg-soft-success text-success px-3">
+                                            <i class="fa fa-check-circle me-1"></i> Available
+                                        </span>
+                                        {% else %}
+                                        <span class="badge rounded-pill bg-soft-warning text-warning px-3">
+                                            <i class="fa fa-clock-o me-1"></i> Occupied
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="pe-4 py-3 text-end">
+                                        <div class="btn-group btn-group-sm rounded shadow-sm border">
+                                            <a href="{% url 'update-room' room.pk %}" class="btn btn-white border-end" title="Edit">
+                                                <i class="fa fa-pencil text-primary"></i>
+                                            </a>
+                                            <a href="{% url 'delete-room' room.pk %}" class="btn btn-white" title="Delete">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-5">
+                                        <div class="opacity-25">
+                                            <i class="fa fa-folder-open-o fa-3x mb-3"></i>
+                                            <p>No rooms found in this inventory.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Professional Dashboard CSS */
+    .x-small { font-size: 0.75rem; letter-spacing: 0.05rem; }
+    .bg-soft-primary { background-color: rgba(13, 110, 253, 0.1); }
+    .bg-soft-success { background-color: rgba(25, 135, 84, 0.1); }
+    .bg-soft-warning { background-color: rgba(255, 193, 7, 0.15); }
+    
+    .table-hover tbody tr:hover {
+        background-color: #fbfcfe;
+    }
+
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-white {
+        background-color: white;
+    }
+
+    .btn-white:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Fixed table-responsive radius */
+    .table-responsive {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    /* Floating label overrides */
+    .form-floating > .form-control:focus, .form-floating > .form-control:not(:placeholder-shown) {
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+        background-color: #fff !important;
+        border: 1px solid #0d6efd !important;
+    }
+</style>
+{% endblock content %}

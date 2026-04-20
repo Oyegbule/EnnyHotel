@@ -1,0 +1,1 @@
+web: gunicorn ENNY_HOTEL.wsgi:application
