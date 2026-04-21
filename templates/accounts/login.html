@@ -21,6 +21,10 @@
         <div class="form-floating mb-3">
             <input type="password" name="password" class="form-control bg-transparent text-white border-white-50" id="floatingPassword" placeholder="Password" required>
             <label for="floatingPassword" class="text-white-50"><i class="fa fa-lock me-2"></i>Password</label>
+
+            <span class="password-toggle-icon" onclick="togglePassword()">
+            <i class="fa fa-eye text-white-50" id="toggleIcon"></i>
+            </span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4 px-1">
@@ -81,6 +85,24 @@
     .form-control::placeholder {
         color: transparent;
     }
+    .password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
+    padding: 5px;
+}
+
+.password-toggle-icon i:hover {
+    color: #c5a059 !important; /* Gold hover effect */
+}
+
+/* Adjusting the input padding so text doesn't overlap the eye */
+#floatingPassword {
+    padding-right: 45px;
+}
 
     /* Fixing label color on focus */
     .form-floating > .form-control:focus ~ label,
@@ -100,4 +122,21 @@
         }
     }
 </style>
+
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById('floatingPassword');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+</script>
 {% endblock content %}

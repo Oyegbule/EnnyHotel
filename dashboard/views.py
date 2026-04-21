@@ -10,7 +10,7 @@ def dashboard(request):
     o_room = Room.objects.filter(is_available=False).count()
     
     # 2. Shift Logic
-    now = timezone.localtime(timezone.now())
+    now = timezone.now()
     hour = now.hour
 
     if 6 <= hour < 14:
