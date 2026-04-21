@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from .forms import StaffRegistrationForm
+from django.contrib.auth import authenticate, login, logout
 
 def login_user(request):
     if request.method == 'POST':
@@ -24,14 +24,21 @@ def logout_user(request):
     messages.success(request, "Your active session has ended. Log in to continue")
     return redirect('login')  
 
+
 def register_user(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        # Use StaffRegistrationForm instead of UserCreationForm
+        form = StaffRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}! You can now login.')
-            return redirect('login') # Redirect to your login page
+            return redirect('login')
+        else:
+            # If the form is invalid, re-render the page with errors
+            return render(request, 'accounts/register.html', {'form': form})
     else:
-        form = UserCreationForm()
-        return render(request, 'accounts/register.html', {'form': form})
+        # Initial empty form
+        form = StaffRegistrationForm()
+        
+    return render(request, 'accounts/register.html', {'form': form})
