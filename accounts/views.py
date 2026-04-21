@@ -31,6 +31,7 @@ def login_user(request):
     return render(request, 'accounts/login.html')
 
 def logout_user(request):
+    request.session.flush()
     logout(request)
     messages.info(request, "You have been logged out.")
     return redirect('login')

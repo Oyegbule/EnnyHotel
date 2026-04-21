@@ -14,12 +14,12 @@
         {% csrf_token %}
         
         <div class="form-floating mb-3">
-            <input type="text" name="username" class="form-control bg-transparent text-white border-white-50" id="floatingInput" placeholder="Username" required>
+            <input type="text" name="username" autocomplete="off" class="form-control bg-transparent text-white border-white-50" id="floatingInput" placeholder="Username" required>
             <label for="floatingInput" class="text-white-50"><i class="fa fa-user me-2"></i>Username</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="password" name="password" class="form-control bg-transparent text-white border-white-50" id="floatingPassword" placeholder="Password" required>
+            <input type="password" name="password" autocomplete="new-password" class="form-control bg-transparent text-white border-white-50" id="floatingPassword" placeholder="Password" required>
             <label for="floatingPassword" class="text-white-50"><i class="fa fa-lock me-2"></i>Password</label>
 
             <span class="password-toggle-icon" onclick="togglePassword()">
@@ -138,5 +138,10 @@ function togglePassword() {
         toggleIcon.classList.add('fa-eye');
     }
 }
+window.onload = function() {
+    // This finds the inputs and clears them every time the page loads
+    document.querySelector('input[name="username"]').value = '';
+    document.querySelector('input[name="password"]').value = '';
+};
 </script>
 {% endblock content %}
